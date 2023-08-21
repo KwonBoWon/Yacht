@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using TMPro;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 public class DiceController : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class DiceController : MonoBehaviour
     private int diceListCount;
     [ReadOnly]
     public int[] pairArray;
+    public GameObject dicePrefab;
+    private float dicePadding = 1.2f;
 
 
     // Start is called before the first frame update
@@ -24,28 +27,41 @@ public class DiceController : MonoBehaviour
 
         for (int i = 0; i < diceListCount; i++)
         {
-            diceList.Add(transform.Find($"Cube ({i})").gameObject);
-            diceTMPList.Add(diceList[i].transform.Find("TMP").GetComponent<TextMeshPro>());
+            Vector3 tragetPos = this.transform.position + new Vector3(i * dicePadding, 0f, 0f);
+            GameObject instantiateDice = Instantiate(dicePrefab, tragetPos, this.transform.rotation);
+            instantiateDice.transform.SetParent(this.transform);
+            instantiateDice.transform.name = $"Dice{i}";
+            diceList.Add(instantiateDice);
+            diceTMPList.Add(diceList[i].transform.Find("DiceTMP").GetComponent<TextMeshPro>());
         }
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetKeyDown("a"))
         {
-            for (int i = 0;i < diceListCount;i++)
-            {
-                diceList[i].GetComponent<Roll>().RollDice();
-            }
-            PairDetect();
+            AllDiceRoll();
         }
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetKeyDown("s"))
         {
             PairDetect();
         }
     }
+    private void AllDiceRoll()
+    {
+        for (int i = 0; i < diceListCount; i++)
+        {
 
+            Dice nowDice = diceList[i].GetComponent<Dice>();
+            if(nowDice.GetNowState() == Dice.state.normal)
+            {
+                nowDice.RollDice();
+            }
+        }
+        PairDetect();
+    }
     private void PairDetect()
     {
         pairArray = new int[6] { 0, 0, 0, 0, 0, 0 };
