@@ -11,10 +11,10 @@ public class DiceController : MonoBehaviour
     private List<TextMeshPro> diceTMPList;
     private int diceListCount;
     [ReadOnly]
-    public int[] pairArray;
+    public static int[] pairArray;
     public GameObject dicePrefab;
     private float dicePadding = 1.2f;
-
+    public TextMeshProUGUI pairTMPUI;
 
     // Start is called before the first frame update
     void Start()
@@ -65,6 +65,7 @@ public class DiceController : MonoBehaviour
     private void PairDetect()
     {
         pairArray = new int[6] { 0, 0, 0, 0, 0, 0 };
+        string text = "";
         for (int i = 0;i < diceListCount; i++)
         {
             pairArray[int.Parse(diceTMPList[i].text) -1 ]++;
@@ -73,8 +74,10 @@ public class DiceController : MonoBehaviour
         {
             if (pairArray[i] > 1) 
             {
+                text += $"{i + 1} is {pairArray[i]}pair" + "\n";
                 Debug.Log($"{i + 1}는 {pairArray[i]}개 있습니다.");
             }
         }
+        pairTMPUI.text = text;
     }
 }
