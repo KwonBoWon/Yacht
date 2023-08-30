@@ -20,7 +20,7 @@ public class Dice : MonoBehaviour
 
 
 
-    void Start()
+    void Awake()
     {
         nowState = state.normal;
         diceTMP = gameObject.transform.Find("DiceTMP").GetComponent<TextMeshPro>();

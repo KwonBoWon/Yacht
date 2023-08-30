@@ -5,10 +5,10 @@ using Photon.Pun;
 using System;
 using Photon.Realtime;
 
-// Ãæµ¹À» ¸·±âÀ§ÇÑ ³×ÀÓ½ºÆäÀÌ½º¼±¾ğ
+// ì¶©ëŒì„ ë§‰ê¸°ìœ„í•œ ë„¤ì„ìŠ¤í˜ì´ìŠ¤ì„ ì–¸
 namespace Com.Yatch
 {
-    public class YatchLancher : MonoBehaviourPunCallbacks // Pun Äİ¹éÇÔ¼öµé
+    public class YatchLancher : MonoBehaviourPunCallbacks // Pun ì½œë°±í•¨ìˆ˜ë“¤
     {
         #region Private Serializable Fields
 
@@ -18,16 +18,25 @@ namespace Com.Yatch
         /// </summary>
         [Tooltip("The maximum number of players per room. When a room is full, it can't be joined by new players, and so new room will be created")]
         [SerializeField]
-        private byte maxPlayersPerRoom = 4; // ¿Ö ¹ÙÀÌÆ®ÀÏ±î?? int·Î »ç¿ëÇÏ´Âµ¥?
+        private byte maxPlayersPerRoom = 4; // ì™œ ë°”ì´íŠ¸ì¼ê¹Œ?? intë¡œ ì‚¬ìš©í•˜ëŠ”ë°?
 
         #endregion
 
         #region Private Fields
 
         /// <summary>
-        /// ¹öÀüº°·Î Å¬¶óÀÌ¾ğÆ®µéÀÌ ¸ÅÄªµÊ
+        /// ë²„ì „ë³„ë¡œ í´ë¼ì´ì–¸íŠ¸ë“¤ì´ ë§¤ì¹­ë¨
         /// </summary>
         string gameVersion = "1";
+
+        #endregion
+        #region Public Fields
+        [Tooltip("The Ui Panel to let the user enter name, connect and play")]
+        [SerializeField]
+        private GameObject controlPanel;
+        [Tooltip("The UI Label to inform the user that the connection is in progress")]
+        [SerializeField]
+        private GameObject progressLabel;
 
         #endregion
 
@@ -36,28 +45,30 @@ namespace Com.Yatch
         private void Awake()
         {
             // #Critical
-            // ·ëÀÇ Å¬¶óÀÌ¾ğÆ®µéÀÇ levelÀ» ÀÚµ¿À¸·Î ¸ÂÃçÁÜ
+            // ë£¸ì˜ í´ë¼ì´ì–¸íŠ¸ë“¤ì˜ levelì„ ìë™ìœ¼ë¡œ ë§ì¶°ì¤Œ
             PhotonNetwork.AutomaticallySyncScene = true;
         }
+
         private void Start()
         {
-            Connet();
+            progressLabel.SetActive(false);
+            controlPanel.SetActive(true);
         }
-
-
         #endregion
 
 
         #region Public Methods
         /// <summary>
-        /// Æ÷ÅæÅ¬¶ó¿ìµå¿¡ ¿¬°á ½ÃÀÛ
+        /// í¬í†¤í´ë¼ìš°ë“œì— ì—°ê²° ì‹œì‘
         /// - If already connected, we attempt joining a random room
         /// - if not yet connected, Connect this application instance to Photon Cloud Network
         /// </summary>
-        private void Connet()
+        public void Connet()
         {
-            // if connected, joinÇÒ ¼ö ÀÖÀ¸¸é Á¶ÀÎ
-            // ¾Æ´Ï¸é ¼­¹ö¿¡ ´Ù½Ã Ä¿³ØÆ® 
+            progressLabel.SetActive(true);
+            controlPanel.SetActive(false);
+            // if connected, joiní•  ìˆ˜ ìˆìœ¼ë©´ ì¡°ì¸
+            // ì•„ë‹ˆë©´ ì„œë²„ì— ë‹¤ì‹œ ì»¤ë„¥íŠ¸ 
             if (PhotonNetwork.IsConnected)
             {
                 // #Critical we need at this point to attempt joining a Random Room.
@@ -66,7 +77,7 @@ namespace Com.Yatch
             }
             else
             {
-                // #Critical, ÀÏ´Ü Æ÷Åæ ¿Â¶óÀÎ ¼­¹ö¿¡ Ä¿³ØÆ®ÇØ¾ßÇÔ
+                // #Critical, ì¼ë‹¨ í¬í†¤ ì˜¨ë¼ì¸ ì„œë²„ì— ì»¤ë„¥íŠ¸í•´ì•¼í•¨
                 PhotonNetwork.GameVersion = gameVersion;
                 PhotonNetwork.ConnectUsingSettings();
             }
@@ -74,18 +85,20 @@ namespace Com.Yatch
         #endregion
 
         #region MonoBehaviourPunCallbacks Callbacks 
-        // PunCallBackÇÔ¼öµé »ç¿ë
+        // PunCallBackí•¨ìˆ˜ë“¤ ì‚¬ìš©
 
-        public override void OnConnectedToMaster() // Á¢¼Ó µÆÀ»¶§
+        public override void OnConnectedToMaster() // ì ‘ì† ëì„ë•Œ
         {
             Debug.Log("PUN Basics Tutorial/Launcher: OnConnectedToMaster() was called by PUN");
             // #Critical: The first we try to do is to join a potential existing room.
-            // Á¶ÀÎ ¸øÇßÀ»½Ã OnJoinRandomFailed() È£Ãâ
+            // ì¡°ì¸ ëª»í–ˆì„ì‹œ OnJoinRandomFailed() í˜¸ì¶œ
             PhotonNetwork.JoinRandomRoom();
         }
 
-        public override void OnDisconnected(DisconnectCause cause) // ¿¬°á ²÷°åÀ» ¶§
+        public override void OnDisconnected(DisconnectCause cause) // ì—°ê²° ëŠê²¼ì„ ë•Œ
         {
+            progressLabel.SetActive(false);
+            controlPanel.SetActive(true);
             Debug.LogWarningFormat("PUN Basics Tutorial/Launcher: OnDisconnected() was called by PUN with reason {0}", cause);
         
         
@@ -95,13 +108,14 @@ namespace Com.Yatch
         {
             Debug.Log("PUN Basics Tutorial/Launcher:OnJoinRandomFailed() was called by PUN. No random room available, so we create one.\nCalling: PhotonNetwork.CreateRoom");
 
-            // #Critical: Á¶ÀÎÀÌ ¾ÈµÇ¸é ¹æÀ» »õ·Î ¸¸µë
+            // #Critical: ì¡°ì¸ì´ ì•ˆë˜ë©´ ë°©ì„ ìƒˆë¡œ ë§Œë“¬
             PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = maxPlayersPerRoom });
         }
 
         public override void OnJoinedRoom()
         {
             Debug.Log("PUN Basics Tutorial/Launcher: OnJoinedRoom() called by PUN. Now this client is in a room.");
+            PhotonNetwork.LoadLevel("TestScene");
         }
 
 
