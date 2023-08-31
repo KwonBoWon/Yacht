@@ -30,7 +30,7 @@ public class DiceController : MonoBehaviourPunCallbacks
 
         for (int i = 0; i < diceListCount; i++)
         {
-            int localPlayerIndex = PhotonNetwork.LocalPlayer.ActorNumber - 1; // 배열은 0부터라서 첫번째 플레이어를 1로하기위해서
+            int localPlayerIndex = PhotonNetwork.LocalPlayer.ActorNumber - 1; // 諛곗뿴? 0遺?곕씪??泥ル쾲吏??뚮젅?댁뼱瑜?1濡쒗븯湲곗쐞?댁꽌
             Transform spawnPostition = spawnPositions[localPlayerIndex % spawnPositions.Length];
 
 
@@ -61,16 +61,25 @@ public class DiceController : MonoBehaviourPunCallbacks
     }
     public void AllDiceRoll()
     {
-        for (int i = 0; i < diceListCount; i++)
+        if (YatchManager.turn == PhotonNetwork.LocalPlayer.ActorNumber)
         {
 
-            Dice nowDice = diceList[i].GetComponent<Dice>();
-            if(nowDice.GetNowState() == Dice.state.normal)
+
+            for (int i = 0; i < diceListCount; i++)
             {
-                nowDice.RollDice();
+
+                Dice nowDice = diceList[i].GetComponent<Dice>();
+                if (nowDice.GetNowState() == Dice.state.normal)
+                {
+                    nowDice.RollDice();
+                }
             }
+            PairDetect();
         }
-        PairDetect();
+        else
+        {
+            return;
+        }
     }
     private void PairDetect()
     {

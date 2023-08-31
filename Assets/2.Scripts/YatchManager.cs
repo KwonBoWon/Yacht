@@ -1,5 +1,7 @@
 
 using Photon.Pun;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -17,13 +19,15 @@ public class YatchManager : MonoBehaviourPunCallbacks // Pun이벤트 감지가�
     }
 
     private static YatchManager instance;
-
+    public static int turn = 1;
     public Text scoreText;
     public Transform[] spawnPositions;
     public GameObject playerPrefab;
     public GameObject ballPrefab;
-    public int turn;
 
+    public GameObject interativeUI;
+    public GameObject informationUI;
+    public TextMeshProUGUI turnTMP;
     private int[] playerScores;
     
 
@@ -36,6 +40,9 @@ public class YatchManager : MonoBehaviourPunCallbacks // Pun이벤트 감지가�
         {
             SpawnBall();
         }
+        turn = 1;
+        turnTMP.text = $"Player{turn} turn";
+        photonView.RPC("TurnPlayerInterative", RpcTarget.All);
     }
 
     private void SpawnPlayer()
@@ -55,7 +62,7 @@ public class YatchManager : MonoBehaviourPunCallbacks // Pun이벤트 감지가�
 
     public override void OnLeftRoom() // 플레이어(자신)가 나갈 때
     {
-        SceneManager.LoadScene("Lobby");
+        SceneManager.LoadScene("YatchLobby");
     }
 
     public void AddScore(int playerNumber, int score)
@@ -70,11 +77,34 @@ public class YatchManager : MonoBehaviourPunCallbacks // Pun이벤트 감지가�
             playerScores[0].ToString(), playerScores[1].ToString());
 
     }
-
+    public void PassTurnButton()
+    {
+        photonView.RPC("PassTurn", RpcTarget.All);
+    }
 
     [PunRPC]
     private void RPCUpdateScoreText(string player1ScoreText, string player2ScoreText)
     {
         scoreText.text = $"{player1ScoreText} : {player2ScoreText}";
+    }
+    [PunRPC]
+    private void TurnPlayerInterative()
+    {
+        if(turn == PhotonNetwork.LocalPlayer.ActorNumber)
+        {
+            interativeUI.SetActive(true);
+            return;
+        }
+        else
+        {
+            interativeUI.SetActive(false);
+            return;
+        }
+    }
+    [PunRPC]
+    private void PassTurn()
+    {
+        _ = (turn == 2) ? turn = 1 : turn = 2;
+        turnTMP.text = $"Player{turn} turn";
     }
 }
