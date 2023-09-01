@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -5,19 +6,21 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 
-public class DiceController : MonoBehaviour
+public class DiceController : MonoBehaviourPunCallbacks
 {
     private List<GameObject> diceList;
     private List<TextMeshPro> diceTMPList;
     private int diceListCount;
+    private float dicePadding = 1.2f;
+
     [ReadOnly]
     public static int[] pairArray;
     public GameObject dicePrefab;
-    private float dicePadding = 1.2f;
     public TextMeshProUGUI pairTMPUI;
-
+    public Transform[] spawnPositions;
     // Start is called before the first frame update
-    void Start()
+
+    private void Awake()
     {
         diceListCount = 5;
 
@@ -27,16 +30,23 @@ public class DiceController : MonoBehaviour
 
         for (int i = 0; i < diceListCount; i++)
         {
-            Vector3 tragetPos = this.transform.position + new Vector3(i * dicePadding, 0f, 0f);
-            GameObject instantiateDice = Instantiate(dicePrefab, tragetPos, this.transform.rotation);
-            instantiateDice.transform.SetParent(this.transform);
+            int localPlayerIndex = PhotonNetwork.LocalPlayer.ActorNumber - 1; // 諛곗뿴? 0遺?곕씪??泥ル쾲吏??뚮젅?댁뼱瑜?1濡쒗븯湲곗쐞?댁꽌
+            Transform spawnPostition = spawnPositions[localPlayerIndex % spawnPositions.Length];
+
+
+            Vector3 tragetPos = spawnPostition.position + new Vector3(i * dicePadding, 0f, 0f);
+            //GameObject instantiateDice = Instantiate(dicePrefab, tragetPos, this.transform.rotation);
+            GameObject instantiateDice = PhotonNetwork.Instantiate(dicePrefab.name, tragetPos, spawnPostition.rotation);
+            instantiateDice.transform.SetParent(spawnPostition);
             instantiateDice.transform.name = $"Dice{i}";
             diceList.Add(instantiateDice);
             diceTMPList.Add(diceList[i].transform.Find("DiceTMP").GetComponent<TextMeshPro>());
         }
-
     }
-
+    void Start()
+    {
+        AllDiceRoll();
+    }
     // Update is called once per frame
     void Update()
     {
@@ -49,18 +59,27 @@ public class DiceController : MonoBehaviour
             PairDetect();
         }
     }
-    private void AllDiceRoll()
+    public void AllDiceRoll()
     {
-        for (int i = 0; i < diceListCount; i++)
+        if (YatchManager.turn == PhotonNetwork.LocalPlayer.ActorNumber)
         {
 
-            Dice nowDice = diceList[i].GetComponent<Dice>();
-            if(nowDice.GetNowState() == Dice.state.normal)
+
+            for (int i = 0; i < diceListCount; i++)
             {
-                nowDice.RollDice();
+
+                Dice nowDice = diceList[i].GetComponent<Dice>();
+                if (nowDice.GetNowState() == Dice.state.normal)
+                {
+                    nowDice.RollDice();
+                }
             }
+            PairDetect();
         }
-        PairDetect();
+        else
+        {
+            return;
+        }
     }
     private void PairDetect()
     {
@@ -75,7 +94,6 @@ public class DiceController : MonoBehaviour
             if (pairArray[i] > 1) 
             {
                 text += $"{i + 1} is {pairArray[i]}pair" + "\n";
-                Debug.Log($"{i + 1}�� {pairArray[i]}�� �ֽ��ϴ�.");
             }
         }
         pairTMPUI.text = text;
