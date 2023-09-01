@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 42005011}
   - component: {fileID: 42005010}
   m_Layer: 0
-  m_Name: ConditionTMP
+  m_Name: NameTMP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1211,8 +1211,9 @@ MonoBehaviour:
 
 '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 92d4fdb075b2d9d45b62ea68b5e9270d, type: 2}
+  m_sharedMaterial: {fileID: -8003133972927878989, guid: 92d4fdb075b2d9d45b62ea68b5e9270d,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1301,7 +1302,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  - {fileID: -8003133972927878989, guid: 92d4fdb075b2d9d45b62ea68b5e9270d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1354,8 +1355,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1531728313}
-  - {fileID: 1649051062}
   - {fileID: 42005009}
+  - {fileID: 1649051062}
   - {fileID: 696790211}
   m_Father: {fileID: 247918388}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1368,9 +1369,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 868911151}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 295854bdda3663a43bb93465572ad6fc, type: 3}
+  m_Script: {fileID: 11500000, guid: fb3c792a23261af48aadad9dd3f2e984, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cardName: 
+  point: 0
+  description: 
+  name: 
+  name_text: {fileID: 42005010}
+  description_text: {fileID: 696790212}
+  point_text: {fileID: 1649051063}
 --- !u!1 &895433801
 GameObject:
   m_ObjectHideFlags: 0
