@@ -1,5 +1,5 @@
 {
-    "condition":"one pair card",
+    "name":"one pair card",
     "description":"만약 한 쌍의 주사위가 같은 문양이라면, 점수 획득",
     "point":"5"
 }
