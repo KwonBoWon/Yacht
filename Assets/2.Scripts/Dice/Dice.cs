@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Photon.Pun;
 
-public class Dice : MonoBehaviour
+public class Dice : MonoBehaviourPunCallbacks, IPunObservable
 {
     // Start is called before the first frame update
     public enum state{
@@ -26,16 +27,16 @@ public class Dice : MonoBehaviour
         diceTMP = gameObject.transform.Find("DiceTMP").GetComponent<TextMeshPro>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void RollDice()
     {
         nowNumber = Random.Range(1, 7);
-        diceTMP.text = nowNumber.ToString();
+        photonView.RPC("DiceText", RpcTarget.All, nowNumber.ToString());
+
+    }
+    [PunRPC]
+    public void DiceText(string text)
+    {
+        diceTMP.text = text;
     }
     public void DiceLocker()
     {
@@ -57,5 +58,16 @@ public class Dice : MonoBehaviour
     {
         nowState = state.normal;
         diceTMP.color = Color.white;
+    }
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(nowNumber);
+        }
+        else
+        {
+            this.nowNumber = (int)stream.ReceiveNext();
+        }
     }
 }
