@@ -1,6 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using Unity.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
@@ -10,7 +10,7 @@ public class DiceController : MonoBehaviour
     private List<GameObject> diceList;
     private List<TextMeshPro> diceTMPList;
     private int diceListCount;
-    [ReadOnly]
+    [Unity.Collections.ReadOnly]
     public static int[] pairArray;
     public GameObject dicePrefab;
     private float dicePadding = 1.2f;

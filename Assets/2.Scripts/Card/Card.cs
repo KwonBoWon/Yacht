@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Text.RegularExpressions;
 
 abstract public class Card : MonoBehaviour
 {
@@ -13,6 +14,7 @@ abstract public class Card : MonoBehaviour
     protected string description;
     [SerializeField]
     protected string name;
+    protected Regex condition_pattern;
     abstract public void checkCondition();
     abstract public void effect();
 }

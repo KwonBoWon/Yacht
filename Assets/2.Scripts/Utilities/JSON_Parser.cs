@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using System;
+using System.Text.RegularExpressions;
 //ΩÃ±€≈Ê¿∏∑Œ ∆ƒΩÃ ≈¨∑°Ω∫ ¿€º∫
 [Serializable]
 public class JSON_Parser
@@ -46,4 +47,5 @@ public class Card_data
 {
     public int point;
     public string name, description;
+    public Regex pattern;
 }

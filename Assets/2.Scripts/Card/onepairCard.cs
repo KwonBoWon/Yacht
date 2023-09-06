@@ -5,6 +5,7 @@ using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 using System.IO;
 using System;
+using System.Text.RegularExpressions;
 using TMPro;
 
 [Serializable]
@@ -17,13 +18,14 @@ public class onepairCard : Card
     private TextMeshPro description_text;
     [SerializeField]
     private TextMeshPro point_text;
-    public void Awake()
+    void Awake()
     {
         jparse = JSON_Parser.instance;;
         Card_data data = jparse.readJSON(F_NAME);
         this.point = data.point;
         this.description = data.description;
         this.name = data.name;
+        this.condition_pattern = data.pattern;
         name_text.text = this.name;
         description_text.text = this.description;
         point_text.text = this.point.ToString();

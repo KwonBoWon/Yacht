@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IObserve
 {
-
+    public void onNotify(int num);
 }

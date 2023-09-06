@@ -5,7 +5,6 @@ using UnityEngine;
 public class ClickManager : MonoBehaviour
 {
     public LayerMask Dice; // 클릭 가능한 레이어 설정
-
     private void Update()
     {
         // 마우스 버튼이 눌렸는지 확인

@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Dice : MonoBehaviour
+
+public class Dice : MonoBehaviour, Subject
 {
     // Start is called before the first frame update
     public enum state{
@@ -13,8 +15,8 @@ public class Dice : MonoBehaviour
     }
     [ReadOnly] private state nowState;
     [ReadOnly] private TextMeshPro diceTMP;
+    private IObserve obj;
     private int nowNumber;
-
     public state GetNowState () { return nowState; }
     public void SetNowState(state _state) { nowState = _state; }
 
@@ -57,5 +59,23 @@ public class Dice : MonoBehaviour
     {
         nowState = state.normal;
         diceTMP.color = Color.white;
+    }
+
+    public void addObserver(IObserve o)
+    {
+        this.obj = o;
+        //throw new System.NotImplementedException();
+    }
+
+    public void removeObserver(IObserve o)
+    {
+        this.obj = null;
+        //throw new System.NotImplementedException();
+    }
+
+    public void inform()
+    {
+        obj.onNotify(nowNumber);
+        //throw new System.NotImplementedException();
     }
 }
