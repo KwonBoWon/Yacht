@@ -16,11 +16,14 @@ public class DiceController : MonoBehaviourPunCallbacks
     [ReadOnly]
     public static int[] pairArray;
     public GameObject dicePrefab;
-    public TextMeshProUGUI pairTMPUI;
-    public Transform[] spawnPositions;
-    // Start is called before the first frame update
+    [SerializeField] private TextMeshProUGUI pairTMPUI;
 
     private void Awake()
+    {
+
+    }
+
+    public void DiceInit()
     {
         diceListCount = 5;
 
@@ -30,14 +33,11 @@ public class DiceController : MonoBehaviourPunCallbacks
 
         for (int i = 0; i < diceListCount; i++)
         {
-            int localPlayerIndex = PhotonNetwork.LocalPlayer.ActorNumber - 1; // 諛곗뿴? 0遺?곕씪??泥ル쾲吏??뚮젅?댁뼱瑜?1濡쒗븯湲곗쐞?댁꽌
-            Transform spawnPostition = spawnPositions[localPlayerIndex % spawnPositions.Length];
+            int localPlayerIndex = PhotonNetwork.LocalPlayer.ActorNumber - 1;
 
-
-            Vector3 tragetPos = spawnPostition.position + new Vector3(i * dicePadding, 0f, 0f);
-            //GameObject instantiateDice = Instantiate(dicePrefab, tragetPos, this.transform.rotation);
-            GameObject instantiateDice = PhotonNetwork.Instantiate(dicePrefab.name, tragetPos, spawnPostition.rotation);
-            instantiateDice.transform.SetParent(spawnPostition);
+            Vector3 tragetPos = transform.position + new Vector3(i * dicePadding, 0f, 0f);
+            GameObject instantiateDice = PhotonNetwork.Instantiate(dicePrefab.name, tragetPos, transform.rotation);
+            instantiateDice.transform.SetParent(transform);
             instantiateDice.transform.name = $"Dice{i}";
             diceList.Add(instantiateDice);
             diceTMPList.Add(diceList[i].transform.Find("DiceTMP").GetComponent<TextMeshPro>());
@@ -45,19 +45,9 @@ public class DiceController : MonoBehaviourPunCallbacks
     }
     void Start()
     {
-        AllDiceRoll();
-    }
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown("a"))
-        {
-            AllDiceRoll();
-        }
-        if (Input.GetKeyDown("s"))
-        {
-            PairDetect();
-        }
+        DiceInit();
+        //AllDiceRoll();
+       
     }
     public void AllDiceRoll()
     {
@@ -83,6 +73,10 @@ public class DiceController : MonoBehaviourPunCallbacks
     }
     private void PairDetect()
     {
+        if(pairTMPUI == null)
+        {
+           pairTMPUI = GameObject.Find("PairTMP").GetComponent<TextMeshProUGUI>();
+        }
         pairArray = new int[6] { 0, 0, 0, 0, 0, 0 };
         string text = "";
         for (int i = 0;i < diceListCount; i++)

@@ -18,7 +18,7 @@ namespace Com.Yatch
         /// </summary>
         [Tooltip("The maximum number of players per room. When a room is full, it can't be joined by new players, and so new room will be created")]
         [SerializeField]
-        private byte maxPlayersPerRoom = 4; // 왜 바이트일까?? int로 사용하는데?
+        
 
         #endregion
 
@@ -109,7 +109,7 @@ namespace Com.Yatch
             Debug.Log("PUN Basics Tutorial/Launcher:OnJoinRandomFailed() was called by PUN. No random room available, so we create one.\nCalling: PhotonNetwork.CreateRoom");
 
             // #Critical: 조인이 안되면 방을 새로 만듬
-            PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = maxPlayersPerRoom });
+            PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = 2 });
         }
 
         public override void OnJoinedRoom()
