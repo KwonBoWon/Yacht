@@ -28,23 +28,13 @@ public class YatchManager : MonoBehaviourPunCallbacks // Pun이벤트 감지가�
     public GameObject startButton;
     public void StartGameButton()
     {
-        photonView.RPC("StartGame", RpcTarget.All);
-    }
-    [PunRPC]
-    public void StartGame()
-    {
-        Debug.Log("******" + PhotonNetwork.CurrentRoom.PlayerCount);
-        Debug.Log("******" + PhotonNetwork.CurrentRoom.MaxPlayers);
-        if(PhotonNetwork.CurrentRoom.PlayerCount == PhotonNetwork.CurrentRoom.MaxPlayers)
+        if (PhotonNetwork.CurrentRoom.PlayerCount == PhotonNetwork.CurrentRoom.MaxPlayers)
         {
-            turn = 1;
-            turnTMP.text = $"Player{turn} turn";
-            photonView.RPC("TurnPlayerInterative", RpcTarget.All);
-            AllPlayersJoined();
-            startButton.SetActive(false);
+            photonView.RPC("StartGame", RpcTarget.All);
+            DiceManger.Instance.RPCDiceControllerInit();
         }
-        return;
     }
+
     public override void OnJoinedRoom()
     {
         infoTMP.text = "Player: " + PhotonNetwork.CurrentRoom.PlayerCount;
@@ -60,7 +50,7 @@ public class YatchManager : MonoBehaviourPunCallbacks // Pun이벤트 감지가�
         SceneManager.LoadScene("YatchLobby");
     }
 
-  
+
     public void PassTurnButton()
     {
         photonView.RPC("PassTurn", RpcTarget.All);
@@ -70,7 +60,7 @@ public class YatchManager : MonoBehaviourPunCallbacks // Pun이벤트 감지가�
     [PunRPC]
     private void TurnPlayerInterative()
     {
-        if(turn == PhotonNetwork.LocalPlayer.ActorNumber)
+        if (turn == PhotonNetwork.LocalPlayer.ActorNumber)
         {
             interativeUI.SetActive(true);
             return;
@@ -86,5 +76,16 @@ public class YatchManager : MonoBehaviourPunCallbacks // Pun이벤트 감지가�
     {
         _ = (turn == 2) ? turn = 1 : turn = 2;
         turnTMP.text = $"Player{turn} turn";
+    }
+    [PunRPC]
+    public void StartGame()
+    {
+
+        turn = 1;
+        turnTMP.text = $"Player{turn} turn";
+        photonView.RPC("TurnPlayerInterative", RpcTarget.All);
+        AllPlayersJoined();
+        startButton.SetActive(false);
+
     }
 }

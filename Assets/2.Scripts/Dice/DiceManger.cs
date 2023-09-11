@@ -11,26 +11,23 @@ public class DiceManger : MonoBehaviourPunCallbacks
         get
         {
             if (instance == null) instance = FindObjectOfType<DiceManger>();
-
             return instance;
         }
     }
-    public Transform[] spawnPositions;
-    public GameObject diceControllerPrefab;
-    public List<GameObject> diceController;
-    private void Start()
-    {
-        SpawnPlayer();
-    }
-    private void SpawnPlayer()
-    {
-        int localPlayerIndex = PhotonNetwork.LocalPlayer.ActorNumber - 1; 
-        Transform spawnPostition = spawnPositions[localPlayerIndex % spawnPositions.Length];
+    public List<DiceController> diceControllerList;
 
-        GameObject tmp =  PhotonNetwork.Instantiate(diceControllerPrefab.name, spawnPostition.position, spawnPostition.rotation);
-        tmp.name = $"P{PhotonNetwork.LocalPlayer.ActorNumber}DiceController";
-        tmp.transform.SetParent(transform);
-        diceController.Add(tmp);
-    }
 
+    public void DiceRoll()
+    {
+        diceControllerList[PhotonNetwork.LocalPlayer.ActorNumber - 1].AllDiceRoll();
+    }
+    public void RPCDiceControllerInit()
+    {
+        photonView.RPC("DiceControllerInit", RpcTarget.All);
+    }
+    [PunRPC]
+    public void DiceControllerInit()
+    {
+        diceControllerList[0].DiceInit(1); diceControllerList[1].DiceInit(2);
+    }
 }

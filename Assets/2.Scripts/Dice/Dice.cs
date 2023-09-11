@@ -12,8 +12,8 @@ public class Dice : MonoBehaviourPunCallbacks, IPunObservable
         normal,
         locked
     }
-    [ReadOnly] private state nowState;
-    [ReadOnly] private TextMeshPro diceTMP;
+    [SerializeField] private state nowState;
+    [SerializeField] private TextMeshPro diceTMP;
     private int nowNumber;
 
     public state GetNowState () { return nowState; }
@@ -70,4 +70,13 @@ public class Dice : MonoBehaviourPunCallbacks, IPunObservable
             this.nowNumber = (int)stream.ReceiveNext();
         }
     }
+    public void OwnerShiptRequest(int id)
+    {
+        photonView.TransferOwnership(id);
+    }
+    public string GetText()
+    {
+        return diceTMP.text;
+    }
+
 }

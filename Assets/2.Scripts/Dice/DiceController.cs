@@ -8,67 +8,39 @@ using UnityEngine.PlayerLoop;
 
 public class DiceController : MonoBehaviourPunCallbacks
 {
-    private List<GameObject> diceList;
-    private List<TextMeshPro> diceTMPList;
-    private int diceListCount;
+    [SerializeField] private List<Dice> diceList;
     private float dicePadding = 1.2f;
-
-    [ReadOnly]
+    
     public static int[] pairArray;
     public GameObject dicePrefab;
     [SerializeField] private TextMeshProUGUI pairTMPUI;
 
-    private void Awake()
-    {
-
-    }
-
-    public void DiceInit()
-    {
-        diceListCount = 5;
-
-        diceList = new List<GameObject>();
-        diceTMPList = new List<TextMeshPro>();
-        pairArray = new int[6] { 0, 0, 0, 0, 0, 0 };
-
-        for (int i = 0; i < diceListCount; i++)
-        {
-            int localPlayerIndex = PhotonNetwork.LocalPlayer.ActorNumber - 1;
-
-            Vector3 tragetPos = transform.position + new Vector3(i * dicePadding, 0f, 0f);
-            GameObject instantiateDice = PhotonNetwork.Instantiate(dicePrefab.name, tragetPos, transform.rotation);
-            instantiateDice.transform.SetParent(transform);
-            instantiateDice.transform.name = $"Dice{i}";
-            diceList.Add(instantiateDice);
-            diceTMPList.Add(diceList[i].transform.Find("DiceTMP").GetComponent<TextMeshPro>());
-        }
-    }
     void Start()
     {
-        DiceInit();
-        //AllDiceRoll();
-       
+
+    }
+    public void DiceInit(int id)
+    {
+        photonView.TransferOwnership(id);
+        pairArray = new int[7] { 0, 0, 0, 0, 0, 0, 0 };
+        for (int i = 0; i < diceList.Count; i++)
+        {
+            Debug.Log("**" + i + "-" + id);
+            diceList[i].OwnerShiptRequest(id);
+        }
     }
     public void AllDiceRoll()
     {
         if (YatchManager.turn == PhotonNetwork.LocalPlayer.ActorNumber)
         {
-
-
-            for (int i = 0; i < diceListCount; i++)
+            for (int i = 0; i < diceList.Count; i++)
             {
-
-                Dice nowDice = diceList[i].GetComponent<Dice>();
-                if (nowDice.GetNowState() == Dice.state.normal)
+                if (diceList[i].GetNowState() == Dice.state.normal)
                 {
-                    nowDice.RollDice();
+                    diceList[i].RollDice();
                 }
             }
             PairDetect();
-        }
-        else
-        {
-            return;
         }
     }
     private void PairDetect()
@@ -77,11 +49,11 @@ public class DiceController : MonoBehaviourPunCallbacks
         {
            pairTMPUI = GameObject.Find("PairTMP").GetComponent<TextMeshProUGUI>();
         }
-        pairArray = new int[6] { 0, 0, 0, 0, 0, 0 };
+        pairArray = new int[7] { 0, 0, 0, 0, 0, 0, 0 };
         string text = "";
-        for (int i = 0;i < diceListCount; i++)
+        for (int i = 0;i < diceList.Count; i++)
         {
-            pairArray[int.Parse(diceTMPList[i].text) -1 ]++;
+            pairArray[int.Parse(diceList[i].GetText()) -1 ]++;
         }
         for (int i = 0; i < pairArray.Length; i++)
         {
