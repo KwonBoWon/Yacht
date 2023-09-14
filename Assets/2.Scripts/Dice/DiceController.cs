@@ -6,19 +6,17 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 
-public class DiceController : MonoBehaviourPunCallbacks
+public class DiceController : MonoBehaviourPunCallbacks, Subject
 {
     [SerializeField] private List<Dice> diceList;
     private float dicePadding = 1.2f;
-    
+
+    [SerializeField] private IObserve o;
     public static int[] pairArray;
     public GameObject dicePrefab;
     [SerializeField] private TextMeshProUGUI pairTMPUI;
 
-    void Start()
-    {
 
-    }
     public void DiceInit(int id)
     {
         photonView.TransferOwnership(id);
@@ -40,28 +38,54 @@ public class DiceController : MonoBehaviourPunCallbacks
                     diceList[i].RollDice();
                 }
             }
-            PairDetect();
+            Notify();
         }
     }
-    private void PairDetect()
+    public int[] getList()
     {
-        if(pairTMPUI == null)
+        for (int i = 0; i < diceList.Count; i++)
         {
-           pairTMPUI = GameObject.Find("PairTMP").GetComponent<TextMeshProUGUI>();
+            pairArray[int.Parse(diceList[i].GetText()) - 1]++;
         }
-        pairArray = new int[7] { 0, 0, 0, 0, 0, 0, 0 };
-        string text = "";
-        for (int i = 0;i < diceList.Count; i++)
-        {
-            pairArray[int.Parse(diceList[i].GetText()) -1 ]++;
-        }
-        for (int i = 0; i < pairArray.Length; i++)
-        {
-            if (pairArray[i] > 1) 
-            {
-                text += $"{i + 1} is {pairArray[i]}pair" + "\n";
-            }
-        }
-        pairTMPUI.text = text;
+        return pairArray;
     }
+    public void addObj(IObserve obj)
+    {
+        o = obj;
+        //throw new System.NotImplementedException();
+    }
+
+    public void removeObj()
+    {
+        o = null;
+        //throw new System.NotImplementedException();
+    }
+
+    public void Notify()
+    {
+        o.OnNotify(this.gameObject);
+        //throw new System.NotImplementedException();
+    }
+    /* deprecated
+private void PairDetect()
+{
+   if(pairTMPUI == null)
+   {
+      pairTMPUI = GameObject.Find("PairTMP").GetComponent<TextMeshProUGUI>();
+   }
+   pairArray = new int[7] { 0, 0, 0, 0, 0, 0, 0 };
+   string text = "";
+   for (int i = 0;i < diceList.Count; i++)
+   {
+       pairArray[int.Parse(diceList[i].GetText()) -1 ]++;
+   }
+   for (int i = 0; i < pairArray.Length; i++)
+   {
+       if (pairArray[i] > 1) 
+       {
+           text += $"{i + 1} is {pairArray[i]}pair" + "\n";
+       }
+   }
+   pairTMPUI.text = text;
+}*/
 }

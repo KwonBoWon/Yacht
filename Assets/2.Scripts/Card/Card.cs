@@ -13,6 +13,7 @@ abstract public class Card : MonoBehaviour
     protected string description;
     [SerializeField]
     protected string name;
-    abstract public void checkCondition();
-    abstract public void effect();
+    protected string condition;
+    abstract public string getCondition();
+    abstract public int getPoint();
 }
