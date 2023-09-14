@@ -16,7 +16,10 @@ public class DiceController : MonoBehaviourPunCallbacks, Subject
     public GameObject dicePrefab;
     [SerializeField] private TextMeshProUGUI pairTMPUI;
 
-
+    private void Awake()
+    {
+        addObj(GameObject.Find("Canvas").GetComponent<IObserve>());
+    }
     public void DiceInit(int id)
     {
         photonView.TransferOwnership(id);
@@ -45,7 +48,7 @@ public class DiceController : MonoBehaviourPunCallbacks, Subject
     {
         for (int i = 0; i < diceList.Count; i++)
         {
-            pairArray[int.Parse(diceList[i].GetText()) - 1]++;
+            pairArray[i]= int.Parse(diceList[i].GetText());
         }
         return pairArray;
     }

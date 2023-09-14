@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using System;
-//½Ì±ÛÅæÀ¸·Î ÆÄ½Ì Å¬·¡½º ÀÛ¼º
+//ì‹±ê¸€í†¤ìœ¼ë¡œ íŒŒì‹± í´ë˜ìŠ¤ ì‘ì„±
 [Serializable]
 public class JSON_Parser
 {
@@ -31,7 +31,7 @@ public class JSON_Parser
         }
         catch
         {
-            Debug.Log("ÆÄÀÏÀÌ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            Debug.Log("íŒŒì¼ì´ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
         }
         Card_data tmp = JsonUtility.FromJson<Card_data>(json_Data.text);
         return tmp;
@@ -46,4 +46,5 @@ public class Card_data
 {
     public int point;
     public string name, description;
+    public string condition;
 }

@@ -33,9 +33,12 @@ public class onepairCard : Card, Subject
         this.point = data.point;
         this.description = data.description;
         this.name = data.name;
+        this.condition = data.condition;
         name_text.text = this.name;
         description_text.text = this.description;
         point_text.text = this.point.ToString();
+        addObj(GameObject.Find("Canvas").GetComponent<IObserve>());
+        Notify();
     }
     public override int getPoint()
     {

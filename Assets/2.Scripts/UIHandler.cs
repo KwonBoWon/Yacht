@@ -15,16 +15,29 @@ public class UIHandler : MonoBehaviour, IObserve
     {
         if (s.TryGetComponent(out DiceController d))
         {
-            diceNum = d.getList().ToString();
+            diceNum = (d.getList()).ToString();
+            if (condition != null)
+            {
+                checkCondition(condition, diceNum, point);
+                Debug.Log("run");
+            }
         }
         if (s.TryGetComponent(out Card c))
         {
             this.condition =new Regex(@c.getCondition());
             this.point = c.getPoint();
         }
-        //throw new System.NotImplementedException();
-        Debug.Log(condition);
-        Debug.Log(diceNum);
+        //throw new System.NotImplementedException()
+        
+    }
+    private bool checkCondition(Regex r, string s,int p)
+    {
+        if (r.IsMatch(s))
+        {
+            Debug.Log(p);
+            return true;
+        }
+        return false;
     }
 }
 public class InformationUI
