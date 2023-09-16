@@ -2,17 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Subject : MonoBehaviour
+public interface Subject
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    void addObj(IObserve obj); //옵저버 추가
+    void removeObj(); //옵저버 삭제
+    void Notify();//옵저버에게 데이터 전달
 }
