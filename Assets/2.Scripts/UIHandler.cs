@@ -15,11 +15,11 @@ public class UIHandler : MonoBehaviour, IObserve
     {
         if (s.TryGetComponent(out DiceController d))
         {
-            diceNum = (d.getList()).ToString();
+            diceNum = d.getList();
             if (condition != null)
             {
                 checkCondition(condition, diceNum, point);
-                Debug.Log("run");
+                Debug.Log(diceNum);
             }
         }
         if (s.TryGetComponent(out Card c))
@@ -32,6 +32,7 @@ public class UIHandler : MonoBehaviour, IObserve
     }
     private bool checkCondition(Regex r, string s,int p)
     {
+        Debug.Log(this.condition);
         if (r.IsMatch(s))
         {
             Debug.Log(p);

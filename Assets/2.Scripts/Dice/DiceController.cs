@@ -44,13 +44,14 @@ public class DiceController : MonoBehaviourPunCallbacks, Subject
             Notify();
         }
     }
-    public int[] getList()
+    public string getList()
     {
+        string list = "";
         for (int i = 0; i < diceList.Count; i++)
         {
-            pairArray[i]= int.Parse(diceList[i].GetText());
+            list += diceList[i].GetText();
         }
-        return pairArray;
+        return list;
     }
     public void addObj(IObserve obj)
     {
