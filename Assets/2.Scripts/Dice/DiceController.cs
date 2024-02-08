@@ -74,5 +74,26 @@ public class DiceController : MonoBehaviourPunCallbacks, Subject
         o.OnNotify(this.gameObject);
         //throw new System.NotImplementedException();
     }
-
+    /* deprecated
+private void PairDetect()
+{
+   if(pairTMPUI == null)
+   {
+      pairTMPUI = GameObject.Find("PairTMP").GetComponent<TextMeshProUGUI>();
+   }
+   pairArray = new int[7] { 0, 0, 0, 0, 0, 0, 0 };
+   string text = "";
+   for (int i = 0;i < diceList.Count; i++)
+   {
+       pairArray[int.Parse(diceList[i].GetText()) -1 ]++;
+   }
+   for (int i = 0; i < pairArray.Length; i++)
+   {
+       if (pairArray[i] > 1) 
+       {
+           text += $"{i + 1} is {pairArray[i]}pair" + "\n";
+       }
+   }
+   pairTMPUI.text = text;
+}*/
 }

@@ -4,27 +4,27 @@ using UnityEngine;
 
 public class ClickManager : MonoBehaviour
 {
-    public LayerMask Dice; // Å¬¸¯ °¡´ÉÇÑ ·¹ÀÌ¾î ¼³Á¤
-
+    public LayerMask Dice; // í´ë¦­ ê°€ëŠ¥í•œ ë ˆì´ì–´ ì„¤ì •
+    
     private void Update()
     {
-        // ¸¶¿ì½º ¹öÆ°ÀÌ ´­·È´ÂÁö È®ÀÎ
+        // ë§ˆìš°ìŠ¤ ë²„íŠ¼ì´ ëˆŒë ¸ëŠ”ì§€ í™•ì¸
         if (Input.GetMouseButtonDown(0))
         {
-            // ¸¶¿ì½º À§Ä¡¿¡¼­ ·¹ÀÌ »ı¼º
+            // ë§ˆìš°ìŠ¤ ìœ„ì¹˜ì—ì„œ ë ˆì´ ìƒì„±
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             Debug.DrawRay(ray.origin, ray.direction * 100f, Color.red, 1f);
             RaycastHit hit;
 
-            // ·¹ÀÌÄ³½ºÆ®¸¦ ÅëÇØ Ãæµ¹Ã¼ °¨Áö
+            // ë ˆì´ìºìŠ¤íŠ¸ë¥¼ í†µí•´ ì¶©ëŒì²´ ê°ì§€
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, Dice))
             {
-                // Å¬¸¯ °¡´ÉÇÑ ¿ÀºêÁ§Æ®°¡ °¨ÁöµÆÀ» ¶§ ½ÇÇàÇÒ ÄÚµå
+                // í´ë¦­ ê°€ëŠ¥í•œ ì˜¤ë¸Œì íŠ¸ê°€ ê°ì§€ëì„ ë•Œ ì‹¤í–‰í•  ì½”ë“œ
                 GameObject clickedObject = hit.collider.gameObject;
                 clickedObject.GetComponent<Dice>().DiceLocker();
                 Debug.Log("Clicked on: " + clickedObject.name);
 
-                // Å¬¸¯ÇÑ ¿ÀºêÁ§Æ®¿¡ ´ëÇÑ Ãß°¡ÀûÀÎ Ã³¸®³ª µ¿ÀÛÀ» ¼öÇàÇÒ ¼ö ÀÖ½À´Ï´Ù.
+                // í´ë¦­í•œ ì˜¤ë¸Œì íŠ¸ì— ëŒ€í•œ ì¶”ê°€ì ì¸ ì²˜ë¦¬ë‚˜ ë™ì‘ì„ ìˆ˜í–‰í•  ìˆ˜ ìˆìŠµë‹ˆë‹¤.
             }
         }
     }
