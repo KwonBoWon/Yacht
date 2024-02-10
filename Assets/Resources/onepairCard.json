@@ -1,6 +1,17 @@
 {
-    "name":"one pair card",
-    "description":"One Pair",
-    "point":"5",
-    "condition":"1{2}|2{2}|3{2}|4{2}|5{2}|6{2}|7{2}|8{2}|9{2}"
+  "Deck": [
+    {
+      "name": "one pair card",
+      "description": "One Pair",
+      "point": "1000",
+      "condition": "1{2}|2{2}|3{2}|4{2}|5{2}|6{2}|7{2}|8{2}|9{2}",
+      "material" : "hex number"
+    },
+    {
+      "name": "one pair card",
+      "description": "1 Pair",
+      "point": "1500",
+      "condition": "(\\d)\\1"
+    }
+  ]
 }
