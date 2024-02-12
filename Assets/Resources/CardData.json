@@ -1,0 +1,52 @@
+{
+  "deck": [
+    {
+      "cardName": "One pair",
+      "description": "One Pair",
+      "point": "1500",
+      "condition": "(\\d)\\1"
+    },
+    {
+      "cardName": "Triple",
+      "description": "Triple",
+      "point": "3000",
+      "condition": "(\\d)\\1\\1"
+    },
+    {
+      "cardName": "Two pair",
+      "description": "Two Pair",
+      "point": "2500",
+      "condition": "(\\d)\\1.*(\\d)\\2"
+    },
+    {
+      "cardName": "Four",
+      "description": "Four",
+      "point": "5000",
+      "condition": "(\\d)\\1\\1\\1"
+    },
+    {
+      "cardName": "Yacht",
+      "description": "Yacht",
+      "point": "7500",
+      "condition": "(\\d)\\1\\1\\1\\1"
+    },
+    {
+      "cardName": "Small straight",
+      "description": "Small straight",
+      "point": "5000",
+      "condition": "12345"
+    },
+    {
+      "cardName": "Big straight",
+      "description": "Big straight",
+      "point": "5500",
+      "condition": "23456"
+    },
+    {
+      "cardName": "Full House",
+      "description": "Full House",
+      "point": "5000",
+      "condition": "(\\d)\\1\\1.*(\\d)\\2\\2|(\\d)\\3\\3.*(\\d)\\4"
+    }
+  ]
+}
