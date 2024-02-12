@@ -333,12 +333,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 58200261}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.81885666, y: 5.6263094, z: -16.52647}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 4.0865045, y: 17.351097, z: -7.1138954}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 516808165}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &90707572
 GameObject:
@@ -2237,7 +2237,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0edd03c44db4f31b414c5bddb91ed0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loadedJson: {fileID: 0}
   cardds:
     deck: []
 --- !u!4 &516808165
@@ -2252,7 +2251,8 @@ Transform:
   m_LocalPosition: {x: -4.905361, y: -11.724787, z: -9.412575}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 58200263}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &531891426
@@ -7912,5 +7912,4 @@ SceneRoots:
   - {fileID: 247918388}
   - {fileID: 392865882}
   - {fileID: 2123019183}
-  - {fileID: 58200263}
   - {fileID: 516808165}

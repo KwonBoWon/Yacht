@@ -2,35 +2,36 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.Networking;
 
 
 public class CardDataParse : MonoBehaviour
 {
-    public TextAsset loadedJson;
     [SerializeField] private Deck cardds;
     
     private void Start()
     {
-        
-        
-        
-        loadedJson = Resources.Load<TextAsset>("CardData");
-        Debug.Log(loadedJson.ToString());
-        cardds = JsonUtility.FromJson<Deck>(loadedJson.ToString());
-        Debug.Log(cardds.ToString());
-        
-        foreach (Cardd card in cardds.deck)
-        {
-            Debug.Log("Card Name: " + card.cardName);
-            Debug.Log("Description: " + card.description);
-            Debug.Log("Point: " + card.point);
-            Debug.Log("Condition: " + card.condition);
-        }
-
-        
-        //carddList = JsonUtility.FromJson<CarddList>(loadedJson.ToString());
-
-        //Debug.Log($"{carddList.CarddList1[0].CardName}");
+        StartCoroutine(GetDeckData());
     }
+    IEnumerator GetDeckData()
+    {
+        // Mock 서버 주소
+        string url = "https://ad6df666-3620-45cb-b2a9-0eb8afa03edc.mock.pstmn.io"; 
+
+        UnityWebRequest request = UnityWebRequest.Get(url);
+
+        yield return request.SendWebRequest();
+
+        if (request.result == UnityWebRequest.Result.Success)
+        {
+            string jsonString = request.downloadHandler.text;
+            cardds = JsonUtility.FromJson<Deck>(jsonString);
+            Debug.Log("Received JSON data: " + jsonString);
+        }
+        else
+        {
+            Debug.LogError("Failed to fetch JSON data: " + request.error);
+        }
+    }
+    
 }
