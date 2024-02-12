@@ -18,7 +18,7 @@ public class Cardd
 public class Deck
 {
     // ** 이 이름이 json 배열의 이름과 같아야함
-    public Cardd[] deck;
+    public List<Cardd> deck;
     public Deck() { }
 
 }
