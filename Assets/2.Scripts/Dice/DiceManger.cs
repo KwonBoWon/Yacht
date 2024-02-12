@@ -16,15 +16,23 @@ public class DiceManger : MonoBehaviourPunCallbacks
     }
     public List<DiceController> diceControllerList;
 
-
+    /// <summary>
+    /// 
+    /// </summary>
     public void DiceRoll()
     {
         diceControllerList[PhotonNetwork.LocalPlayer.ActorNumber - 1].AllDiceRoll();
     }
+    /// <summary>
+    /// 주사위 생성RPC
+    /// </summary>
     public void RPCDiceControllerInit()
     {
         photonView.RPC("DiceControllerInit", RpcTarget.All);
     }
+    /// <summary>
+    /// 주사위 생성
+    /// </summary>
     [PunRPC]
     public void DiceControllerInit()
     {

@@ -20,6 +20,7 @@ public class DiceController : MonoBehaviourPunCallbacks, Subject
     {
         addObj(GameObject.Find("Canvas").GetComponent<IObserve>());
     }
+    
     public void DiceInit(int id)
     {
         photonView.TransferOwnership(id);
@@ -30,6 +31,9 @@ public class DiceController : MonoBehaviourPunCallbacks, Subject
             diceList[i].OwnerShiptRequest(id);
         }
     }
+    /// <summary>
+    /// 모든 주사위(잠겨있지 않은) 굴리기
+    /// </summary>
     public void AllDiceRoll()
     {
         if (YatchManager.turn == PhotonNetwork.LocalPlayer.ActorNumber)
