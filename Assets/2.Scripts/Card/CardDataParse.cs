@@ -9,7 +9,13 @@ using Random = UnityEngine.Random;
 public class CardDataParse : MonoBehaviour
 {
     [SerializeField] private Deck cardds;
-    
+
+    public Deck Cardds
+    {
+        get => cardds;
+        set => cardds = value;
+    }
+
     private void Start()
     {
         StartCoroutine(GetDeckData());
@@ -21,7 +27,7 @@ public class CardDataParse : MonoBehaviour
     IEnumerator GetDeckData()
     {
         // Mock 서버 주소
-        string url = "https://ad6df666-3620-45cb-b2a9-0eb8afa03edc.mock.pstmn.io"; 
+        string url = "https://ba36e15b-84ac-4c7c-a84a-a83ce0d839de.mock.pstmn.io"; 
 
         UnityWebRequest request = UnityWebRequest.Get(url);
 

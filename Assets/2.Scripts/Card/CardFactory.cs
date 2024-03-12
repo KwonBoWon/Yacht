@@ -2,20 +2,17 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-
 public interface ICard
 {
-    void CreateCard();
     void PlayCard();
     void DestroyCard();
 }
 
 public class SimpleCard : ICard
 {
-    public void CreateCard()
+    public SimpleCard(Cardd cardd)
     {
-        Debug.Log("Create");
+        
     }
     public void PlayCard()
     {
@@ -29,9 +26,9 @@ public class SimpleCard : ICard
 
 public class AbilityCard : ICard
 {
-    public void CreateCard()
+    public AbilityCard(Cardd cardd)
     {
-        Debug.Log("Create");
+        
     }
     public void PlayCard()
     {
@@ -47,44 +44,69 @@ public class AbilityCard : ICard
 
 public interface ICardFactory
 {
-    ICard CreateCard();
+    ICard CreateCard(Cardd cardd);
 }
 
 public class SimpleCardFactory : ICardFactory
 {
-    public ICard CreateCard()
+    public ICard CreateCard(Cardd cardd)
     {
-        return new SimpleCard();
+        return new SimpleCard(cardd);
     }
 }
 
 public class AbilityCardFactory : ICardFactory
 {
-    public ICard CreateCard()
+    public ICard CreateCard(Cardd cardd)
     {
-        return new AbilityCard();
+        return new AbilityCard(cardd);
     }
 }
 
 public class CardFactory : MonoBehaviour
 {
+    public CardDataParse cardDataParse;
+    public Deck deckData;
+    public Cardd nowCardd;
+    public int cardIndex;
+    public ICard nowCard;
+    ICardFactory simpleCardFactory = new SimpleCardFactory();
+    ICardFactory abilityCardFactory = new AbilityCardFactory();
+    
+    public GameObject CardPrefab;
+    
+    
     private void Start()
     {
-        ICardFactory simpleCardFactory = new SimpleCardFactory();
-        ICardFactory abilityCardFactory = new AbilityCardFactory();
-
-        
-        
+        cardIndex = 0;
+        simpleCardFactory = new SimpleCardFactory();
+        abilityCardFactory = new AbilityCardFactory();
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.M))
         {
-            ICard onePair = new SimpleCard();
-            onePair.CreateCard();
-            onePair.PlayCard();
+            //ICard onePair = simpleCardFactory.CreateCard();
         }
         
     }
+
+    public void CardDraw()
+    {
+        if (cardIndex >= deckData.deck.Count)
+        {
+            nowCardd = deckData.deck[cardIndex];
+            cardIndex++;
+
+            
+        }
+        else
+        {
+            // TODO:GameEnd
+        }
+
+    }
+    
+    
 }
